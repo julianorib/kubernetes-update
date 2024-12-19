@@ -1,7 +1,16 @@
 ---
   - name: Upgrade Plan
     ansible.builtin.shell: kubeadm upgrade plan
-  
+    register: upgradeplan
+
+  - name: Debug
+    ansible.builtin.debug:
+      msg: "{{ upgradeplan }}"
+
   - name: Upgrade Apply
     ansible.builtin.shell: kubeadm upgrade apply {{ version }} -y
     register: upgradeapply
+
+  - name: Debug
+    ansible.builtin.debug:
+      msg: "{{ upgradeapply }}"

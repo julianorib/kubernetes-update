@@ -5,4 +5,4 @@
 
   - name: Debug
     ansible.builtin.debug:
-    msg: "{{ upgradenode.stdout_lines[-1] }}"
+      msg: "{{ upgradenode }}"
