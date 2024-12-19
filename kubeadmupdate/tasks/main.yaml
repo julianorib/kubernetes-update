@@ -1,0 +1,7 @@
+---  
+  - name: Update kubeadm
+    ansible.builtin.dnf:
+      name: kubeadm
+      state: latest
+      disable_excludes: kubernetes
+

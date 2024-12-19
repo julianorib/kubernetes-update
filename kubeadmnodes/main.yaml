@@ -1,0 +1,8 @@
+---
+  - name: Upgrade Node
+    ansible.builtin.shell: kubeadm upgrade node
+    register: upgradenode
+
+  - name: Debug
+    ansible.builtin.debug:
+    msg: "{{ upgradenode.stdout_lines[-1] }}"

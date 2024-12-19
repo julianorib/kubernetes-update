@@ -1,0 +1,29 @@
+---
+  - name: KubeConfig
+    ansible.builtin.shell: export KUBECONFIG=./etc/kubernetes/admin.conf
+    delegate_to: "{{ item }}"
+    loop: "{{ groups['master']}}"
+
+  - name: Drain the node
+    ansible.builtin.shell: kubectl drain {{ ansible_hostname|lower }} --ignore-daemonsets --delete-emptydir-data
+    delegate_to: "{{ item }}"
+    loop: "{{ groups['master']}}"
+    
+  - name: Update kubelet e kubectl
+    ansible.builtin.dnf:
+      name: 
+        - kubelet
+        - kubectl 
+      state: latest
+      disable_excludes: kubernetes
+
+  - name: Restart kubelet
+    ansible.builtin.systemd:
+      name: kubelet
+      state: restarted
+      daemon_reload: true
+
+  - name: UnDrain the node
+    ansible.builtin.shell: kubectl uncordon {{ ansible_hostname|lower }} 
+    delegate_to: "{{ item }}"
+    loop: "{{ groups['master']}}"

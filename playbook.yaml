@@ -1,0 +1,41 @@
+- name: Todos - Atualizar Repositorio
+  hosts: kubernetes
+  roles:
+    - repositorio
+
+- name: Control Plane - Atualizar Kubeadm
+  hosts: 
+    - master
+    - controlplane
+  roles:
+    - kubeadmupdate
+
+- name: Control Plane - Kubeadm upgrade master
+  hosts: master
+  roles:
+    - kubeadmupgrade
+
+- name: Control Plane - Kubeadm upgrade node
+  hosts: controlplane
+  roles:
+    - kubeadmnodes
+
+- name: Control Plane - Kubelet e Kubectl upgrade
+  hosts: 
+   - master
+   - controlplane
+  serial: 1
+  roles:
+    - kubeletupdate
+
+- name: Worker - Kubeadm upgrade node
+  hosts: worker
+  serial: 1
+  roles: 
+    - kubeadmnodes
+
+- name: Worker - Kubelet e Kubectl upgrade
+  hosts: worker
+  serial: 1
+  roles:
+    - kubeletupdate

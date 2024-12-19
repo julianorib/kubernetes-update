@@ -1,0 +1,14 @@
+---
+  - name: Incluir versão nova no Repositorio
+    ansible.builtin.lineinfile:
+      state: present
+      dest: /etc/yum.repos.d/kubernetes.repo
+      regexp: "baseurl=https://pkgs.k8s.io/core:/stable:/{{ repo }}/rpm/"
+      line: "baseurl=https://pkgs.k8s.io/core:/stable:/{{ reponew }}/rpm/"
+    
+  - name: Incluir versão nova no Repositorio 2
+    ansible.builtin.lineinfile:
+      state: present
+      dest: /etc/yum.repos.d/kubernetes.repo
+      regexp: "gpgkey=https://pkgs.k8s.io/core:/stable:/{{ repo }}/rpm/repodata/repomd.xml.key"
+      line: "gpgkey=https://pkgs.k8s.io/core:/stable:/{{ reponew }}/rpm/repodata/repomd.xml.key"
